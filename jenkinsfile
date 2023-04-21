@@ -1,0 +1,38 @@
+node 
+{
+stage "1. update the system using below command"
+sh "yum update -y"
+sh "yum upgrade -y"
+
+stage "2. Please install required packages"
+sh "yum install -y git"
+sh "yum install -y httpd"
+sh "yum install -y java"
+sh "yum install -y python3"
+sh "yum install -y php"
+sh "yum install -y docker"
+
+stage "3. activate all services"
+sh "systemctl restart httpd"
+sh "systemctl enable httpd"
+sh "systemctl restart docker"
+sh "systemctl enable docker"
+
+stage "4. create folder and files"
+sh "mkdir -p input"
+sh "mkdir -p output"
+sh "touch sample.txt"
+
+stage "5.docker pull some images"
+sh "docker pull ubuntu"
+sh "docker pull fedora"
+sh "docker pull mysql:5.7"
+
+stage "6. verify the date"
+sh "date"
+writeFile file: "/var/www/html/index.html", text: "This file is useful, need to archive it."
+
+stage "7. verify the system uptime"
+sh "uptime"
+
+}
